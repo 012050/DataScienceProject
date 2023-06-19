@@ -5,11 +5,12 @@ from selenium.webdriver.common.by import By
 
 # 딜레이를 위한 모듈
 import time
+
 # csv를 위한 모듈
 import csv
 
 # 책 카테고리를 알려주는 함수
-def category(names):
+def category(names): # 책 이름의 리스트를 받음
     driver = webdriver.Chrome()
     driver.get("https://www.kyobobook.co.kr/")
     driver.implicitly_wait(60)
@@ -21,16 +22,19 @@ def category(names):
         for name in names:
             name_set = set() # 중복 체크를 위한 초기화
             # 책 이름 검색
-            driver.find_elements(By.CLASS_NAME, "ip_gnb_search")[0].send_keys(name)
+            driver.find_elements(By.CLASS_NAME, "ip_gnb_search")[0].send_keys(name, Keys.ENTER)
             driver.implicitly_wait(60)
-    
+        
             # 검색 목록에서 첫번째 책 클릭
-            driver.find_elements(By.XPATH, '//*[@id="img_box_mouseover_0"]/img')[0].click()
+            driver.find_elements(By.CLASS_NAME, "prod_info")[0].click()
             driver.implicitly_wait(60)
 
             # 책 분야 확인
             element = driver.find_element(By.XPATH, '//*[@id="mainDiv"]/main/section[1]/div/ol/li[last()]')
             category_id = element.get_attribute("data-id") # 책 카테고리 코드 추출
+
+            # 1초 대기
+            time.sleep(1)
 
             country = driver.find_element(By.XPATH, '//*[@id="mainDiv"]/main/section[1]/div/ol/li[2]/a')
             country_url = country.get_attribute("href")
@@ -47,6 +51,9 @@ def category(names):
             driver.get(full_url)
             driver.implicitly_wait(60)
 
+            # 1초 대기
+            time.sleep(1)
+
             for i in range(1, 11):
                 xpath1 = f'//*[@id="homeTabAll"]/div[3]/ol/li[{i}]/div[2]/div[2]/a/span'
                 book_element = driver.find_element(By.XPATH, xpath1)
@@ -61,5 +68,3 @@ def category(names):
                     name_set.add(book_name)
         
     driver.close()
-
-category(["영화를 빨리 감기로 보는 사람들", "정의란 무엇인가", "오만과 편견"])
