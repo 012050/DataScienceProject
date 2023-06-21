@@ -10,8 +10,8 @@ import time
 import os
 
 try:
-    print("database 폴더 생성")
     os.mkdir("database/")
+    print("database 폴더 생성")
 except:
     print("database 폴더가 이미 존재합니다.")
 
@@ -19,7 +19,6 @@ conn = sqlite3.connect("database/bookmate.db")
 cur = conn.cursor()
 
 try:
-    print("테이블 생성")
     cur.execute(""" CREATE TABLE StudentsData(
         StudentNumber INT(8) PRIMARY KEY,
         HashPassword TEXT(128),
@@ -32,6 +31,7 @@ try:
         BookCategory TEXT
     );
     """)
+    print("테이블 생성")
 except:
     print("테이블이 이미 존재합니다.")
 

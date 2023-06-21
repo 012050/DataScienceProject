@@ -15,8 +15,8 @@ import os
 # 책 정보를 csv파일로 작성
 def category(names):
     try:
-        print("algorithm/category: database 폴더 생성")
         os.mkdir("database/")
+        print("algorithm/category: database 폴더 생성")
     except:
         print("algorithm/category: database 폴더가 이미 존재합니다.")
 
