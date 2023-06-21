@@ -86,15 +86,19 @@ def book_list(id, pw, ReturnData=2):
             bookdatalist.append(tmp_list)
 
         for number in range(len(SeleniumBookList)):
-            driver.find_element(By.XPATH, f"/html/body/section/section/section/div[2]/form/div[3]/table/tbody/tr[{number + 1}]/td[1]/a").click()
-            driver.implicitly_wait(60)
-            img_url = driver.find_element(By.XPATH, '/html/body/section/section/section/div[2]/div[1]/form[1]/div/section/div/div/section/div[2]/div/div[2]/div/div/iframe').get_attribute('src')
-            driver.get(img_url)
-            img = driver.find_element(By.XPATH, "/html/body/table/tbody/tr[1]/td/a/img").get_attribute('src')
-            BookName = bookdatalist[number][1]
-            urllib.request.urlretrieve(img, f'static/images/{BookName}.jpg')
-            driver.get("https://lib.deu.ac.kr/lend_mylist.mir")
-            driver.implicitly_wait(60)
+            try:
+                BookName = bookdatalist[number][1]
+                driver.find_element(By.XPATH, f"/html/body/section/section/section/div[2]/form/div[3]/table/tbody/tr[{number + 1}]/td[1]/a").click()
+                driver.implicitly_wait(60)
+                img_url = driver.find_element(By.XPATH, '/html/body/section/section/section/div[2]/div[1]/form[1]/div/section/div/div/section/div[2]/div/div[2]/div/div/iframe').get_attribute('src')
+                driver.get(img_url)
+                img = driver.find_element(By.XPATH, "/html/body/table/tbody/tr[1]/td/a/img").get_attribute('src')
+                BookName = bookdatalist[number][1]
+                urllib.request.urlretrieve(img, f'static/images/{BookName}.jpg')
+                driver.get("https://lib.deu.ac.kr/lend_mylist.mir")
+                driver.implicitly_wait(60)
+            except:
+                print(f"이미지 {BookName}를 불러오는데 실패했습니다.")
 
     # 크롬 드라이버 종료
     driver.close()
